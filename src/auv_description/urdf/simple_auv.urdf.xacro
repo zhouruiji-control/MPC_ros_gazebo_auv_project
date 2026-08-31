@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+
+<robot name="simple_auv"
+       xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- AUV size and mass parameters -->
+  <xacro:property name="auv_length" value="1.0"/>
+  <xacro:property name="auv_radius" value="0.15"/>
+  <xacro:property name="auv_mass" value="20.0"/>
+
+  <!-- Main body of the AUV -->
+  <link name="base_link">
+
+    <!-- ============================= -->
+    <!-- Visual model: cylinder -->
+    <!-- ============================= -->
+    <visual>
+
+      <!-- Cylinder is along z by default, rotate it to x direction -->
+      <origin xyz="0 0 0"
+              rpy="0 1.57079632679 0"/>
+
+      <geometry>
+        <cylinder
+          radius="${auv_radius}"
+          length="${auv_length}"/>
+      </geometry>
+
+      <material name="blue">
+        <color rgba="0.1 0.3 0.8 1.0"/>
+      </material>
+
+    </visual>
+
+
+    <!-- ============================= -->
+    <!-- Collision model: cylinder -->
+    <!-- ============================= -->
+    <collision>
+
+      <origin xyz="0 0 0"
+              rpy="0 1.57079632679 0"/>
+
+      <geometry>
+        <cylinder
+          radius="${auv_radius}"
+          length="${auv_length}"/>
+      </geometry>
+
+    </collision>
+
+
+    <!-- ============================= -->
+    <!-- Mass and inertia -->
+    <!-- ============================= -->
+    <inertial>
+
+      <origin xyz="0 0 0"
+              rpy="0 0 0"/>
+
+      <mass value="${auv_mass}"/>
+
+      <!-- Inertia of a cylinder whose main axis is x -->
+      <inertia
+        ixx="${0.5 * auv_mass * auv_radius * auv_radius}"
+        ixy="0.0"
+        ixz="0.0"
+        iyy="${(1.0 / 12.0) * auv_mass *
+              (3.0 * auv_radius * auv_radius +
+               auv_length * auv_length)}"
+        iyz="0.0"
+        izz="${(1.0 / 12.0) * auv_mass *
+              (3.0 * auv_radius * auv_radius +
+               auv_length * auv_length)}"/>
+
+    </inertial>
+
+  </link>
+
+</robot>
